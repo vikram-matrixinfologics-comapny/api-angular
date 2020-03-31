@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiServiceService } from '../_service/api-service.service';
+import { TokenService } from '../_service/token.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,6 +15,7 @@ export class SignupComponent implements OnInit {
   constructor(
   	private formBuilder: FormBuilder, 
   	private api:ApiServiceService,
+    private Token:TokenService,
   	private router: Router
   	) { }
 
@@ -56,7 +58,8 @@ export class SignupComponent implements OnInit {
     }
 
       handleResponse(data) {
-		    console.log(data)
+		    console.log(this.Token.payload(data.access_token));
+        this.Token.handle(data.access_token);
 		    this.router.navigateByUrl('/profile');
 		  }
 

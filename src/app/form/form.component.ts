@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http'; 
+import { TokenService } from '../_service/token.service';
 import { ApiServiceService } from '../_service/api-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form',
@@ -14,7 +16,9 @@ export class FormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private http:HttpClient,
-    private api:ApiServiceService
+    private api:ApiServiceService,
+    private Token:TokenService,
+    private router:Router
     ) { }
 
   ngOnInit(): void {
@@ -56,10 +60,12 @@ export class FormComponent implements OnInit {
     }
 
     HandleResponce(data){
-      console.log(data);
+      console.log(this.Token.loggedIn());
+      this.Token.handle(data.access_token);
+      this.router.navigateByUrl('/profile');
     }
 
     HandleError(error){
-      console.log(error);
+      console.log(error.error.error);
     }
 }
